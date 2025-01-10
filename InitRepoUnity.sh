@@ -37,9 +37,9 @@ fi
 
 git add .
 git commit -m "$git_message"
-#git branch -M main
-#git remote add origin "$git_url"
-#git push -u origin main
+git branch -M main
+git remote add origin "$git_url"
+git push -u origin main
 
 # Pause the script
 read -p "Press Enter to continue or Ctrl+C to exit."
