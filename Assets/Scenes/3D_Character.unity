@@ -391,19 +391,57 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000392147}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 65ad89583494e44479ef4ada9f1fe654, type: 3}
   m_Controller: {fileID: 9100000, guid: a7fdb86a5517c1e4d98d56a32af375bd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+    'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
+    'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
+    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:RightArm'\n\tTransform
+    'mixamorig:LeftLeg'\n\tand more ...\n\tFrom animation clip 'Walking'\n\tFrom
+    animation clip 'Running'\n\tFrom animation clip 'Walking'\n\tFrom animation clip
+    'Running'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &1000392150 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1119928302702552148, guid: d2c54367215d12f42a3838021e15ca42, type: 3}
+  m_PrefabInstance: {fileID: 7774994369737624025}
+  m_PrefabAsset: {fileID: 0}
+--- !u!143 &1000392151
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000392147}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &1228350897
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -595,7 +633,7 @@ CharacterController:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.5
@@ -662,7 +700,19 @@ MonoBehaviour:
     m_ActionId: daff4975-79ec-46d4-b2b7-a2794f067ea3
     m_ActionName: 'AlienWarrior/Run[/XInputControllerWindows/leftTrigger]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1624502261}
+        m_TargetAssemblyTypeName: AlienInputController, Assembly-CSharp
+        m_MethodName: OnAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: a2e01c91-7d70-4059-9839-eda7a868aff7
     m_ActionName: 'AlienWarrior/Aim[/XInputControllerWindows/rightTrigger]'
   - m_PersistentCalls:
@@ -704,6 +754,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 2
   _runSpeed: 8
+  _turnSpeed: 100
+  _fastTurnSpeed: 200
+  _isRootMotionned: 1
+  _rootCharacter: {fileID: 1000392150}
 --- !u!1001 &7774994369737624025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -723,6 +777,10 @@ PrefabInstance:
     - target: {fileID: 31877924451919299, guid: d2c54367215d12f42a3838021e15ca42, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 32.01292
+      objectReference: {fileID: 0}
+    - target: {fileID: 342581946218299118, guid: d2c54367215d12f42a3838021e15ca42, type: 3}
+      propertyPath: m_Name
+      value: Root
       objectReference: {fileID: 0}
     - target: {fileID: 455257704589041161, guid: d2c54367215d12f42a3838021e15ca42, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1403,6 +1461,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 342581946218299118, guid: d2c54367215d12f42a3838021e15ca42, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1000392149}
+    - targetCorrespondingSourceObject: {fileID: 342581946218299118, guid: d2c54367215d12f42a3838021e15ca42, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1000392151}
   m_SourcePrefab: {fileID: 100100000, guid: d2c54367215d12f42a3838021e15ca42, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
