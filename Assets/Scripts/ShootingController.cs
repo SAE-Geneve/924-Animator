@@ -1,16 +1,19 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ShootingController : MonoBehaviour
 {
     [SerializeField] private CinemachineCamera camera;
-
+    [SerializeField] private bool hasTorsoLayer;
+    
     private AlienInputController _inputs;
     private Animator _animator;
     
     private int _torsoLayerIndex;
     private float _torsoLayerWeight = 0;
     private float _layerVelocity;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,8 +30,11 @@ public class ShootingController : MonoBehaviour
         camera.Priority = _inputs.IsAiming ? 100 : 0;
         //camera.enabled = _inputs.IsAiming;
         
-        _torsoLayerWeight = Mathf.SmoothDamp(_torsoLayerWeight, _inputs.IsAiming ? 1f : 0f, ref _layerVelocity, 0.15f);
-        _animator.SetLayerWeight(_torsoLayerIndex, _torsoLayerWeight);
+        if(hasTorsoLayer)
+        {
+            _torsoLayerWeight = Mathf.SmoothDamp(_torsoLayerWeight, _inputs.IsAiming ? 1f : 0f, ref _layerVelocity, 0.15f);
+            _animator.SetLayerWeight(_torsoLayerIndex, _torsoLayerWeight);
+        }
         
     }
 }
