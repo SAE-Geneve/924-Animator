@@ -1,39 +1,62 @@
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class ShootingController : MonoBehaviour
 {
-    [SerializeField] private CinemachineCamera camera;
-    [SerializeField] private bool hasTorsoLayer;
+    [SerializeField] private CinemachineCamera aimCamera;
+    [SerializeField] private GameObject aimingPanel;
+    [SerializeField] private GameObject spotter;
+    [SerializeField] private GameObject targetName;
+    
+    [SerializeField] private LayerMask aimLayer;
     
     private AlienInputController _inputs;
-    private Animator _animator;
-    
-    private int _torsoLayerIndex;
-    private float _torsoLayerWeight = 0;
-    private float _layerVelocity;
-    
+    private Camera _mainCamera;
+    private Transform _startSpotter;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {        
         _inputs = GetComponent<AlienInputController>();
-        _animator = GetComponentInChildren<Animator>();
-        
-        _torsoLayerIndex = _animator.GetLayerIndex("Torso");
+        _mainCamera = Camera.main;
+        _startSpotter = spotter.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        camera.Priority = _inputs.IsAiming ? 100 : 0;
-        //camera.enabled = _inputs.IsAiming;
+        aimCamera.Priority = _inputs.IsAiming ? 100 : 0;
+        aimingPanel.SetActive(_inputs.IsAiming ? true : false);
         
-        if(hasTorsoLayer)
+        if(_inputs.IsAiming)
         {
-            _torsoLayerWeight = Mathf.SmoothDamp(_torsoLayerWeight, _inputs.IsAiming ? 1f : 0f, ref _layerVelocity, 0.15f);
-            _animator.SetLayerWeight(_torsoLayerIndex, _torsoLayerWeight);
+            Ray ray = _mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, _mainCamera.farClipPlane));
+            Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, _mainCamera.farClipPlane, aimLayer))
+            {
+                spotter.SetActive(true);
+                spotter.transform.position = hit.point;
+
+                if (hit.collider.CompareTag("Targets"))
+                {
+                    targetName.SetActive(true);
+                    targetName.GetComponent<TextMeshProUGUI>().text = hit.collider.name;
+                }
+                else
+                {
+                    targetName.SetActive(false);
+                }
+
+            }
+            
+        }
+        else
+        {
+            spotter.transform.SetPositionAndRotation(_startSpotter.position, _startSpotter.rotation);
+            spotter.SetActive(false);
         }
         
     }

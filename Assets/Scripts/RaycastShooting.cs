@@ -31,8 +31,6 @@ public class RaycastShooting : MonoBehaviour
                 target.TakeDamage(damageRate * Time.deltaTime);
             }
             
-            
-            
         }
         else
         {
